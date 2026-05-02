@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuzu Graph Explorer</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.9.1/dist/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.9.1/theme-chalk/dark/css-vars.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/element-plus@2.9.1/dist/index.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body, #app { height: 100%; width: 100%; overflow: hidden; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+  .app-container { display: flex; flex-direction: column; height: 100%; background: #0f172a; color: #e2e8f0; }
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #1e293b; border-bottom: 1px solid #334155; height: 48px; flex-shrink: 0; }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-title { font-size: 16px; font-weight: 700; color: #38bdf8; }
+  .header-status { font-size: 12px; color: #94a3b8; display: flex; align-items: center; gap: 8px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; display: inline-block; }
+  .status-dot.offline { background: #ef4444; }
+  .main-content { display: flex; flex: 1; overflow: hidden; }
+  .sidebar { width: 260px; background: #1e293b; border-right: 1px solid #334155; display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width 0.2s; }
+  .sidebar.collapsed { width: 40px; }
+  .sidebar-toggle { display: flex; align-items: center; justify-content: center; height: 36px; cursor: pointer; color: #94a3b8; border-bottom: 1px solid #334155; font-size: 14px; }
+  .sidebar-toggle:hover { color: #38bdf8; }
+  .sidebar-tabs { display: flex; border-bottom: 1px solid #334155; }
+  .sidebar-tab { flex: 1; text-align: center; padding: 8px; font-size: 12px; cursor: pointer; color: #94a3b8; border-bottom: 2px solid transparent; }
+  .sidebar-tab.active { color: #38bdf8; border-bottom-color: #38bdf8; }
+  .sidebar-tab:hover { color: #e2e8f0; }
+  .sidebar-body { flex: 1; overflow-y: auto; padding: 8px; }
+  .schema-section { margin-bottom: 8px; }
+  .schema-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background: #334155; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
+  .schema-header:hover { background: #475569; }
+  .schema-header .arrow { transition: transform 0.2s; font-size: 10px; }
+  .schema-header .arrow.open { transform: rotate(90deg); }
+  .schema-item { padding: 4px 8px 4px 16px; font-size: 12px; color: #cbd5e1; cursor: pointer; border-radius: 3px; }
+  .schema-item:hover { background: #334155; color: #38bdf8; }
+  .schema-props { padding: 2px 8px 2px 24px; font-size: 11px; color: #64748b; }
+  .history-item { padding: 6px 8px; font-size: 12px; cursor: pointer; border-radius: 4px; margin-bottom: 4px; background: #0f172a; border: 1px solid #334155; }
+  .history-item:hover { border-color: #38bdf8; }
+  .history-query { color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Fira Code', monospace; }
+  .history-meta { color: #64748b; font-size: 11px; margin-top: 2px; }
+  .center-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .editor-panel { padding: 8px; background: #1e293b; border-bottom: 1px solid #334155; flex-shrink: 0; }
+  .editor-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .editor-wrapper { position: relative; border: 1px solid #334155; border-radius: 6px; overflow: hidden; }
+  .editor-wrapper textarea { width: 100%; min-height: 60px; max-height: 160px; padding: 10px 12px; background: #0f172a; color: #e2e8f0; border: none; outline: none; font-family: 'Fira Code', 'Consolas', monospace; font-size: 13px; resize: vertical; line-height: 1.5; }
+  .editor-wrapper textarea::placeholder { color: #475569; }
+  .result-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .result-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: #1e293b; border-bottom: 1px solid #334155; flex-shrink: 0; }
+  .result-tabs { display: flex; gap: 2px; }
+  .result-tab { padding: 4px 14px; font-size: 12px; cursor: pointer; border-radius: 4px 4px 0 0; color: #94a3b8; background: transparent; border: 1px solid transparent; border-bottom: none; }
+  .result-tab.active { color: #38bdf8; background: #0f172a; border-color: #334155; }
+  .result-tab:hover { color: #e2e8f0; }
+  .result-info { font-size: 12px; color: #64748b; }
+  .result-body { flex: 1; overflow: hidden; position: relative; }
+  .graph-container { width: 100%; height: 100%; }
+  .table-container { width: 100%; height: 100%; overflow: auto; padding: 8px; }
+  .json-container { width: 100%; height: 100%; overflow: auto; padding: 12px; }
+  .json-pre { font-family: 'Fira Code', monospace; font-size: 12px; line-height: 1.6; color: #e2e8f0; white-space: pre-wrap; word-break: break-all; }
+  .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #475569; font-size: 14px; flex-direction: column; gap: 8px; }
+  .el-button--primary { --el-button-bg-color: #0ea5e9; --el-button-border-color: #0ea5e9; --el-button-hover-bg-color: #38bdf8; --el-button-hover-border-color: #38bdf8; }
+  .el-button--danger { --el-button-bg-color: #ef4444; --el-button-border-color: #ef4444; }
+  /* Element Plus dark overrides */
+  .el-table { --el-table-bg-color: #0f172a; --el-table-tr-bg-color: #0f172a; --el-table-header-bg-color: #1e293b; --el-table-row-hover-bg-color: #1e293b; --el-table-text-color: #e2e8f0; --el-table-header-text-color: #cbd5e1; --el-table-border-color: #334155; --el-table-current-row-bg-color: #1e293b; --el-table-header-bg-color: #1e293b; }
+  .el-table th.el-table__cell { background: #1e293b !important; color: #cbd5e1 !important; font-weight: 600; }
+  .el-table td.el-table__cell { color: #e2e8f0 !important; }
+  .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell { background: #162032 !important; }
+  .el-table__body tr:hover > td.el-table__cell { background: #1e293b !important; }
+  .el-table__empty-text { color: #64748b !important; }
+  .el-table .el-table__cell { border-bottom-color: #334155 !important; }
+  .el-table--border .el-table__cell { border-right-color: #334155 !important; }
+  .el-table__inner-wrapper::before { background-color: #334155 !important; }
+  .el-pagination { --el-pagination-bg-color: transparent; --el-pagination-text-color: #cbd5e1; --el-pagination-button-bg-color: #1e293b; --el-pagination-hover-color: #38bdf8; --el-pagination-button-color: #e2e8f0; --el-pagination-button-disabled-bg-color: #0f172a; --el-pagination-button-disabled-color: #475569; }
+  .el-pager li { background: #1e293b !important; color: #cbd5e1 !important; }
+  .el-pager li.is-active { background: #0ea5e9 !important; color: #fff !important; }
+  .el-input__wrapper { background: #0f172a !important; box-shadow: 0 0 0 1px #334155 inset !important; }
+  .el-input__inner { color: #e2e8f0 !important; }
+  .el-dialog { background: #1e293b !important; }
+  .el-dialog__title { color: #e2e8f0 !important; }
+  .el-dialog__body { color: #cbd5e1 !important; }
+  .el-dialog__header { border-bottom: 1px solid #334155; }
+  .el-button { --el-button-text-color: #e2e8f0; }
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="app-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <span class="header-title">Kuzu Graph Explorer</span>
+      </div>
+      <div class="header-status">
+        <span class="status-dot" :class="{ offline: !health.ok }"></span>
+        <span v-if="health.ok">{{ health.node_count?.toLocaleString() }} nodes / {{ health.edge_count?.toLocaleString() }} edges</span>
+        <span v-else>Disconnected</span>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <!-- Sidebar -->
+      <div class="sidebar" :class="{ collapsed: sidebarCollapsed }">
+        <div class="sidebar-toggle" @click="sidebarCollapsed = !sidebarCollapsed">
+          {{ sidebarCollapsed ? '>' : '<' }}
+        </div>
+        <template v-if="!sidebarCollapsed">
+          <div class="sidebar-tabs">
+            <div class="sidebar-tab" :class="{ active: sidebarTab === 'schema' }" @click="sidebarTab = 'schema'">Schema</div>
+            <div class="sidebar-tab" :class="{ active: sidebarTab === 'history' }" @click="sidebarTab = 'history'">History</div>
+          </div>
+          <div class="sidebar-body">
+            <!-- Schema Panel -->
+            <template v-if="sidebarTab === 'schema'">
+              <div class="schema-section">
+                <div class="schema-header" @click="nodeSectionOpen = !nodeSectionOpen">
+                  <span>Node Tables ({{ schema.node_tables?.length || 0 }})</span>
+                  <span class="arrow" :class="{ open: nodeSectionOpen }">&#9654;</span>
+                </div>
+                <template v-if="nodeSectionOpen">
+                  <div v-for="t in schema.node_tables" :key="t.name">
+                    <div class="schema-item" @click="insertSampleQuery('node', t.name)">
+                      {{ t.name }}
+                      <span style="color:#64748b; font-size:10px">({{ t.properties.length }})</span>
+                    </div>
+                    <div class="schema-props" v-if="expandedSchemaNode === t.name">
+                      <div v-for="p in t.properties" :key="p.name">{{ p.name }}: {{ p.type }}</div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <div class="schema-section">
+                <div class="schema-header" @click="edgeSectionOpen = !edgeSectionOpen">
+                  <span>Edge Tables ({{ schema.rel_tables?.length || 0 }})</span>
+                  <span class="arrow" :class="{ open: edgeSectionOpen }">&#9654;</span>
+                </div>
+                <template v-if="edgeSectionOpen">
+                  <div v-for="t in schema.rel_tables" :key="t.name">
+                    <div class="schema-item" @click="insertSampleQuery('edge', t)">
+                      {{ t.name }}
+                      <span style="color:#64748b; font-size:10px">({{ t.src }} &rarr; {{ t.dst }})</span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+            <!-- History Panel -->
+            <template v-if="sidebarTab === 'history'">
+              <div style="margin-bottom:8px; text-align:right;">
+                <el-button size="small" type="danger" @click="clearHistory" :disabled="!history.length">Clear</el-button>
+              </div>
+              <div v-if="!history.length" style="color:#475569; font-size:12px; text-align:center; padding:20px;">No queries yet</div>
+              <div v-for="h in history" :key="h.id" class="history-item" @click="loadHistory(h)">
+                <div class="history-query">{{ h.query }}</div>
+                <div class="history-meta">{{ h.result_count }} results &middot; {{ h.elapsed_ms }}ms &middot; {{ formatTime(h.timestamp) }}</div>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+
+      <!-- Center Panel -->
+      <div class="center-panel">
+        <!-- Editor -->
+        <div class="editor-panel">
+          <div class="editor-toolbar">
+            <el-button type="primary" size="small" @click="runQuery" :loading="loading" :disabled="!cypher.trim()">
+              &#9654; Run
+            </el-button>
+            <el-button size="small" @click="cypher = ''">Clear</el-button>
+            <span style="flex:1"></span>
+            <span style="font-size:11px; color:#64748b;">Ctrl+Enter to run</span>
+          </div>
+          <div class="editor-wrapper">
+            <textarea v-model="cypher" placeholder="MATCH (n:Account) RETURN n LIMIT 10" @keydown.ctrl.enter="runQuery" @keydown.meta.enter="runQuery" ref="editorRef"></textarea>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="result-panel">
+          <div class="result-toolbar">
+            <div class="result-tabs">
+              <div class="result-tab" :class="{ active: resultTab === 'graph' }" @click="resultTab = 'graph'">&#9678; Graph</div>
+              <div class="result-tab" :class="{ active: resultTab === 'table' }" @click="resultTab = 'table'">&#9776; Table</div>
+              <div class="result-tab" :class="{ active: resultTab === 'json' }" @click="resultTab = 'json'">{ } JSON</div>
+            </div>
+            <div class="result-info" v-if="lastResult">
+              {{ lastResult.count }} rows &middot; {{ lastResult.elapsed_ms }}ms
+              <template v-if="graphData"> &middot; {{ graphData.nodes.length }} nodes / {{ graphData.edges.length }} edges</template>
+            </div>
+          </div>
+          <div class="result-body">
+            <!-- Empty state -->
+            <div v-if="!lastResult" class="empty-state">
+              <div style="font-size:40px;">&#9678;</div>
+              <div>Write a Cypher query and hit Run</div>
+            </div>
+
+            <!-- Graph View -->
+            <div v-show="lastResult && resultTab === 'graph'" class="graph-container" ref="graphRef"></div>
+
+            <!-- Table View -->
+            <div v-show="lastResult && resultTab === 'table'" class="table-container">
+              <el-table :data="tablePageData" stripe size="small" :max-height="tableHeight" style="width:100%">
+                <el-table-column v-for="col in tableColumns" :key="col" :prop="col" :label="col" :min-width="120" show-overflow-tooltip>
+                  <template #default="{ row }">
+                    <span v-if="typeof row[col] === 'object'">{{ JSON.stringify(row[col]) }}</span>
+                    <span v-else>{{ row[col] }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div style="padding:8px; display:flex; justify-content:center;">
+                <el-pagination v-if="tableTotal > tablePageSize" background layout="prev, pager, next" :total="tableTotal" :page-size="tablePageSize" v-model:current-page="tablePage" size="small" />
+              </div>
+            </div>
+
+            <!-- JSON View -->
+            <div v-show="lastResult && resultTab === 'json'" class="json-container">
+              <pre class="json-pre">{{ formattedJSON }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Node/Edge detail dialog -->
+  <el-dialog v-model="detailVisible" :title="detailTitle" width="480px" destroy-on-close>
+    <div v-for="(v, k) in detailProps" :key="k" style="display:flex; padding:4px 0; border-bottom:1px solid #334155;">
+      <span style="width:140px; color:#64748b; font-size:12px; flex-shrink:0;">{{ k }}</span>
+      <span style="font-size:12px; word-break:break-all;">{{ v === null ? 'null' : v }}</span>
+    </div>
+  </el-dialog>
+</div>
+
+<script>
+const { createApp, ref, reactive, computed, watch, onMounted, nextTick } = Vue;
+
+const API = '/api/v1';
+
+const GROUP_COLORS = [
+  '#38bdf8','#a78bfa','#f472b6','#fb923c','#4ade80',
+  '#facc15','#f87171','#2dd4bf','#818cf8','#e879f9',
+  '#34d399','#fbbf24','#60a5fa','#c084fc','#fb7185',
+  '#a3e635','#22d3ee','#f97316','#8b5cf6','#ec4899',
+];
+
+const app = createApp({
+  setup() {
+    const cypher = ref('MATCH (n:Account) RETURN n LIMIT 20');
+    const loading = ref(false);
+    const lastResult = ref(null);
+    const graphData = ref(null);
+    const resultTab = ref('graph');
+    const sidebarCollapsed = ref(false);
+    const sidebarTab = ref('schema');
+    const nodeSectionOpen = ref(true);
+    const edgeSectionOpen = ref(true);
+    const expandedSchemaNode = ref(null);
+    const health = reactive({ ok: false, node_count: 0, edge_count: 0 });
+    const schema = reactive({ node_tables: [], rel_tables: [] });
+    const history = ref([]);
+    const graphRef = ref(null);
+    const editorRef = ref(null);
+    let networkInstance = null;
+
+    const tableColumns = computed(() => {
+      if (!lastResult.value || !lastResult.value.results.length) return [];
+      return Object.keys(lastResult.value.results[0]);
+    });
+    const tableTotal = computed(() => lastResult.value?.results?.length || 0);
+    const tablePageSize = 50;
+    const tablePage = ref(1);
+    const tablePageData = computed(() => {
+      if (!lastResult.value) return [];
+      const start = (tablePage.value - 1) * tablePageSize;
+      return lastResult.value.results.slice(start, start + tablePageSize);
+    });
+    const tableHeight = computed(() => 'calc(100vh - 320px)');
+
+    const formattedJSON = computed(() => {
+      if (!lastResult.value) return '';
+      return JSON.stringify(lastResult.value.results, null, 2);
+    });
+
+    const detailVisible = ref(false);
+    const detailTitle = ref('');
+    const detailProps = ref({});
+
+    function formatTime(ts) {
+      const d = new Date(ts * 1000);
+      return d.toLocaleTimeString();
+    }
+
+    async function fetchHealth() {
+      try {
+        const r = await (await fetch(`${API}/health`)).json();
+        health.ok = r.status === 'ok';
+        health.node_count = r.node_count;
+        health.edge_count = r.edge_count;
+      } catch { health.ok = false; }
+    }
+
+    async function fetchSchema() {
+      try {
+        const r = await (await fetch(`${API}/schema`)).json();
+        schema.node_tables = r.node_tables || [];
+        schema.rel_tables = r.rel_tables || [];
+      } catch {}
+    }
+
+    async function fetchHistory() {
+      try {
+        const r = await (await fetch(`${API}/query/history`)).json();
+        history.value = r;
+      } catch {}
+    }
+
+    async function clearHistory() {
+      await fetch(`${API}/query/history`, { method: 'DELETE' });
+      history.value = [];
+      localStorage.removeItem('kuzu_history');
+    }
+
+    function loadHistory(h) {
+      cypher.value = h.query;
+    }
+
+    function insertSampleQuery(type, table) {
+      if (type === 'node') {
+        cypher.value = `MATCH (n:${table}) RETURN n LIMIT 25`;
+      } else {
+        cypher.value = `MATCH (a:${table.src})-[e:${table.name}]->(b:${table.dst}) RETURN a, e, b LIMIT 25`;
+      }
+    }
+
+    async function runQuery() {
+      const q = cypher.value.trim();
+      if (!q || loading.value) return;
+      loading.value = true;
+      lastResult.value = null;
+      graphData.value = null;
+
+      try {
+        // Run both flat and graph queries in parallel
+        const [flatRes, graphRes] = await Promise.all([
+          fetch(`${API}/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: q }),
+          }),
+          fetch(`${API}/query/graph`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: q }),
+          }),
+        ]);
+
+        const flatData = await flatRes.json();
+        const graphResData = await graphRes.json();
+
+        if (!flatRes.ok) {
+          ElementPlus.ElMessage.error(flatData.detail || 'Query failed');
+          return;
+        }
+
+        lastResult.value = flatData;
+        if (graphRes.ok && (graphResData.nodes.length || graphResData.edges.length)) {
+          graphData.value = graphResData;
+          resultTab.value = 'graph';
+          await nextTick();
+          renderGraph(graphResData);
+        } else {
+          resultTab.value = 'table';
+        }
+
+        tablePage.value = 1;
+        fetchHistory();
+        saveHistoryLocal();
+      } catch (e) {
+        ElementPlus.ElMessage.error(e.message);
+      } finally {
+        loading.value = false;
+      }
+    }
+
+    function renderGraph(data) {
+      if (!graphRef.value) return;
+
+      const groupSet = new Set(data.nodes.map(n => n.group));
+      const groupColorMap = {};
+      let ci = 0;
+      groupSet.forEach(g => { groupColorMap[g] = GROUP_COLORS[ci++ % GROUP_COLORS.length]; });
+
+      const nodes = data.nodes.map(n => ({
+        id: n.id,
+        label: n.label,
+        group: n.group,
+        title: `${n.group}: ${n.label}\n${Object.entries(n.properties).slice(0, 5).map(([k,v]) => `${k}: ${v}`).join('\n')}`,
+        color: {
+          background: groupColorMap[n.group],
+          border: groupColorMap[n.group],
+          highlight: { background: groupColorMap[n.group], border: '#fff' },
+        },
+        font: { color: '#e2e8f0', size: 12, face: 'Inter, sans-serif' },
+        shape: 'dot',
+        size: 18,
+        borderWidth: 2,
+      }));
+
+      const edges = data.edges.map(e => ({
+        from: e.from_,
+        to: e.to,
+        label: e.label,
+        title: `${e.label}\n${Object.entries(e.properties).map(([k,v]) => `${k}: ${v}`).join('\n')}`,
+        color: { color: '#475569', highlight: '#38bdf8' },
+        font: { color: '#94a3b8', size: 10, strokeWidth: 3, strokeColor: '#0f172a' },
+        arrows: 'to',
+        smooth: { type: 'continuous' },
+      }));
+
+      if (networkInstance) { networkInstance.destroy(); networkInstance = null; }
+
+      const ds = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+      const options = {
+        physics: { stabilization: { iterations: 100 }, barnesHut: { gravitationalConstant: -3000, springLength: 120 } },
+        interaction: { hover: true, tooltipDelay: 100, navigationButtons: true, keyboard: { bindToWindow: false } },
+        layout: { improvedLayout: true },
+      };
+
+      networkInstance = new vis.Network(graphRef.value, ds, options);
+
+      networkInstance.on('click', (params) => {
+        if (params.nodes.length) {
+          const nid = params.nodes[0];
+          const n = data.nodes.find(x => x.id === nid);
+          if (n) {
+            detailTitle.value = `${n.group}: ${n.label}`;
+            detailProps.value = n.properties;
+            detailVisible.value = true;
+          }
+        } else if (params.edges.length) {
+          const eid = params.edges[0];
+          const e = data.edges[eid];
+          if (e) {
+            detailTitle.value = e.label;
+            detailProps.value = e.properties;
+            detailVisible.value = true;
+          }
+        }
+      });
+    }
+
+    function saveHistoryLocal() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('kuzu_history') || '[]');
+        const current = { query: cypher.value.trim(), timestamp: Date.now() / 1000 };
+        stored.unshift(current);
+        if (stored.length > 100) stored.length = 100;
+        localStorage.setItem('kuzu_history', JSON.stringify(stored));
+      } catch {}
+    }
+
+    function loadHistoryLocal() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('kuzu_history') || '[]');
+        if (stored.length && !history.value.length) {
+          history.value = stored.map((h, i) => ({
+            id: `local_${i}`,
+            query: h.query,
+            timestamp: h.timestamp,
+            result_count: 0,
+            elapsed_ms: 0,
+          }));
+        }
+      } catch {}
+    }
+
+    onMounted(() => {
+      fetchHealth();
+      fetchSchema();
+      fetchHistory().then(loadHistoryLocal);
+      setInterval(fetchHealth, 30000);
+    });
+
+    return {
+      cypher, loading, lastResult, graphData, resultTab,
+      sidebarCollapsed, sidebarTab,
+      nodeSectionOpen, edgeSectionOpen, expandedSchemaNode,
+      health, schema, history,
+      graphRef, editorRef,
+      tableColumns, tableTotal, tablePageSize, tablePage, tablePageData, tableHeight,
+      formattedJSON,
+      detailVisible, detailTitle, detailProps,
+      formatTime, runQuery, clearHistory, loadHistory, insertSampleQuery,
+    };
+  },
+});
+
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>
