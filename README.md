@@ -1,5 +1,10 @@
 # Linany's Kuzu Research
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
+[![Kuzu](https://img.shields.io/badge/Kuzu-0.11.3-green.svg)](https://kuzudb.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
+
 基于 [Kuzu](https://kuzudb.com/) 图数据库的全栈研究项目，涵盖 REST API 服务、ETL 数据管道、性能基准测试与压力测试，以及内置的可视化前端。
 
 ## 项目架构
