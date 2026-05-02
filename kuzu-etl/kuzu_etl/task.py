@@ -337,7 +337,7 @@ class ETLTask:
             source_host="localhost",
             source_database="mydb",
             source_username="postgres",
-            source_password="pass",
+            source_password="your_password",
             source_table="account",
             fields=[
                 {"source_field": "id", "target_property": "id"},

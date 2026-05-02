@@ -2,12 +2,12 @@ from kuzu_etl import ETLTask
 
 task = ETLTask(
     source_db="postgresql",
-    source_host="purioc.team",
+    source_host="______",                   # ← 填写主机地址
     source_port=5432,
-    source_username="root",
-    source_password="Huawei@4321",
-    source_database="purioc",
-    source_schema="purioc",
+    source_username="______",               # ← 填写用户名
+    source_password="______",               # ← 填写密码
+    source_database="______",               # ← 填写数据库名
+    source_schema="______",                 # ← 填写 schema，MySQL/SQLite 留 None
     source_table="suppliers",
     # 留空则自动映射源端所有列（列名 = 属性名）
     # 需要改名或转换时手动指定：
@@ -23,6 +23,5 @@ n = task.clear()  # 清空并返回删了多少条
 print(f"deleted {n}")
 
 if __name__ == "__main__":
-    print("hello", "hello")
     result = task.run()
     print(result)  # extracted=100 written=100 elapsed_ms=523.4
