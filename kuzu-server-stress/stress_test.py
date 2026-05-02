@@ -143,6 +143,9 @@ GRAPH_QUERIES = {
     "Graph 1-hop Account->Post":    'MATCH (a:Account)-[e:AccountCreatesPost]->(p:PostItem) RETURN a, e, p LIMIT 10',
     "Graph Account->Company":       'MATCH (a:Account)-[e:AccountWorksAtCompany]->(c:Company) RETURN a, e, c LIMIT 10',
     "Graph 2-hop Acct->Order->Prod":'MATCH (a:Account)-[:AccountPlacesOrder]->(o:OrderItem)-[e:OrderContainsProduct]->(p:Product) RETURN a, o, e, p LIMIT 10',
+    "Graph PK 1-hop Acct->Post":    'MATCH (a:Account {id: 1})-[e:AccountCreatesPost]->(p:PostItem) RETURN a, e, p LIMIT 10',
+    "Graph PK Acct->Company":       'MATCH (a:Account {id: 1})-[e:AccountWorksAtCompany]->(c:Company) RETURN a, e, c LIMIT 10',
+    "Graph PK 2-hop Acct->Ord->Prod":'MATCH (a:Account {id: 1})-[:AccountPlacesOrder]->(o:OrderItem)-[e:OrderContainsProduct]->(p:Product) RETURN a, o, e, p LIMIT 10',
 }
 
 # ---------------------------------------------------------------------------

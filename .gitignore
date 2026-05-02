@@ -1,2 +1,100 @@
 /data/
 /kuzu-test/csv_data/
+# =========================
+# PyCharm / JetBrains
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# 如果团队想共享部分 PyCharm 配置，可以不要直接忽略整个 .idea/
+# 可改成只忽略：
+# .idea/workspace.xml
+# .idea/tasks.xml
+# .idea/usage.statistics.xml
+# .idea/dictionaries/
+# .idea/shelf/
+
+# =========================
+# Python cache
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.venv/
+env/
+ENV/
+virtualenv/
+
+# =========================
+# Distribution / packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# =========================
+# Test / coverage
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+
+# =========================
+# Type checking / lint cache
+# =========================
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Local env / secrets
+# =========================
+.env
+.env.*
+!.env.example
+*.local
+
+# =========================
+# Database / local files
+# =========================
+*.sqlite3
+*.db
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Python tooling
+# =========================
+pip-wheel-metadata/
+Pipfile.lock
+poetry.lock

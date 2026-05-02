@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kuzu Server 压测报告 — 2026-05-02T15:38:55.079489</title>
+<title>Kuzu Server 压测报告 — 2026-05-02T16:40:19.242029</title>
 <style>
   :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #c9d1d9;
            --accent: #58a6ff; --green: #3fb950; --red: #f85149; --yellow: #d29922; --dim: #8b949e; }
@@ -37,21 +37,21 @@
 <body>
 <h1>Kuzu Server 压力测试报告</h1>
 <div class="meta">
-  生成时间: 2026-05-02T15:38:55.079489<br>
+  生成时间: 2026-05-02T16:40:19.242029<br>
   目标服务: http://127.0.0.1:8000/api/v1<br>
   数据库: ../kuzu-test/test_db ｜ 节点: 20,050,000 ｜ 边: 39,000,000<br>
-  并发级别: [1, 5, 10, 20, 50] ｜ 每测试请求数: 20
+  并发级别: [1, 10, 50] ｜ 每测试请求数: 20
 </div>
 
 <h2>关键指标概览</h2>
 <div class="card">
   <div class="stats-grid">
-    <div class="stat"><div class="value">70.0</div><div class="label">吞吐量 (req/s)</div></div>
-    <div class="stat"><div class="value">535.6</div><div class="label">平均延迟 (ms)</div></div>
-    <div class="stat"><div class="value">805.1</div><div class="label">P95 延迟 (ms)</div></div>
-    <div class="stat"><div class="value">894.6</div><div class="label">P99 延迟 (ms)</div></div>
+    <div class="stat"><div class="value">35.0</div><div class="label">吞吐量 (req/s)</div></div>
+    <div class="stat"><div class="value">1125.1</div><div class="label">平均延迟 (ms)</div></div>
+    <div class="stat"><div class="value">1747.3</div><div class="label">P95 延迟 (ms)</div></div>
+    <div class="stat"><div class="value">4596.9</div><div class="label">P99 延迟 (ms)</div></div>
     <div class="stat"><div class="value ">0.00%</div><div class="label">错误率</div></div>
-    <div class="stat"><div class="value">4200</div><div class="label">60s 总请求</div></div>
+    <div class="stat"><div class="value">2100</div><div class="label">60s 总请求</div></div>
   </div>
 </div>
 
@@ -61,118 +61,133 @@
 <tr><th>接口</th><th>方法</th><th>延迟(ms)</th><th>服务端(ms)</th><th>最小(ms)</th><th>最大(ms)</th><th>错误</th></tr>
 <tr>
                 <td>GET /health</td><td>GET</td>
-                <td>923.5</td><td>0.0</td>
-                <td>923.5</td><td>923.5</td>
+                <td>923.8</td><td>0.0</td>
+                <td>923.8</td><td>923.8</td>
                 <td>0</td>
             </tr><tr>
                 <td>GET /schema</td><td>GET</td>
-                <td>62.5</td><td>0.0</td>
-                <td>62.5</td><td>62.5</td>
+                <td>204.1</td><td>0.0</td>
+                <td>204.1</td><td>204.1</td>
                 <td>0</td>
             </tr><tr>
                 <td>GET /schema/nodes</td><td>GET</td>
-                <td>2.9</td><td>0.0</td>
-                <td>2.9</td><td>2.9</td>
+                <td>11.7</td><td>0.0</td>
+                <td>11.7</td><td>11.7</td>
                 <td>0</td>
             </tr><tr>
                 <td>GET /schema/edges</td><td>GET</td>
-                <td>13.5</td><td>0.0</td>
-                <td>13.5</td><td>13.5</td>
+                <td>5.7</td><td>0.0</td>
+                <td>5.7</td><td>5.7</td>
                 <td>0</td>
             </tr><tr>
                 <td>GET /query/history</td><td>GET</td>
-                <td>14.8</td><td>0.0</td>
-                <td>14.8</td><td>14.8</td>
+                <td>11.1</td><td>0.0</td>
+                <td>11.1</td><td>11.1</td>
                 <td>0</td>
             </tr><tr>
                 <td>DELETE /query/history</td><td>DELETE</td>
-                <td>16.1</td><td>0.0</td>
-                <td>16.1</td><td>16.1</td>
+                <td>2.1</td><td>0.0</td>
+                <td>2.1</td><td>2.1</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — PK Lookup</td><td>POST</td>
-                <td>23.2</td><td>6.0</td>
-                <td>23.2</td><td>23.2</td>
+                <td>39.6</td><td>17.5</td>
+                <td>39.6</td><td>39.6</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — Count single table</td><td>POST</td>
-                <td>26.0</td><td>1.7</td>
-                <td>26.0</td><td>26.0</td>
+                <td>29.8</td><td>3.1</td>
+                <td>29.8</td><td>29.8</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — Filter score>90</td><td>POST</td>
-                <td>60.8</td><td>59.2</td>
-                <td>60.8</td><td>60.8</td>
+                <td>18.4</td><td>14.7</td>
+                <td>18.4</td><td>18.4</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — AVG score</td><td>POST</td>
-                <td>20.5</td><td>4.6</td>
-                <td>20.5</td><td>20.5</td>
+                <td>6.7</td><td>4.2</td>
+                <td>6.7</td><td>6.7</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — GROUP BY country</td><td>POST</td>
-                <td>73.5</td><td>47.1</td>
-                <td>73.5</td><td>73.5</td>
+                <td>51.1</td><td>33.2</td>
+                <td>51.1</td><td>51.1</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — 1-hop Account->Post</td><td>POST</td>
-                <td>48.6</td><td>33.0</td>
-                <td>48.6</td><td>48.6</td>
+                <td>51.7</td><td>23.8</td>
+                <td>51.7</td><td>51.7</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query — 2-hop Acct->Order->Prod</td><td>POST</td>
-                <td>572.8</td><td>552.2</td>
-                <td>572.8</td><td>572.8</td>
+                <td>79.1</td><td>56.6</td>
+                <td>79.1</td><td>79.1</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — PK Lookup</td><td>POST</td>
-                <td>28.0</td><td>1.6</td>
-                <td>28.0</td><td>28.0</td>
+                <td>25.5</td><td>2.2</td>
+                <td>25.5</td><td>25.5</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — Count single table</td><td>POST</td>
-                <td>157.8</td><td>2.5</td>
-                <td>157.8</td><td>157.8</td>
+                <td>29.1</td><td>1.9</td>
+                <td>29.1</td><td>29.1</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — Filter score>90</td><td>POST</td>
-                <td>20.3</td><td>5.3</td>
-                <td>20.3</td><td>20.3</td>
+                <td>16.5</td><td>2.8</td>
+                <td>16.5</td><td>16.5</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — AVG score</td><td>POST</td>
-                <td>27.4</td><td>3.2</td>
-                <td>27.4</td><td>27.4</td>
+                <td>5.7</td><td>3.0</td>
+                <td>5.7</td><td>5.7</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — GROUP BY country</td><td>POST</td>
-                <td>49.6</td><td>22.6</td>
-                <td>49.6</td><td>49.6</td>
+                <td>51.7</td><td>28.7</td>
+                <td>51.7</td><td>51.7</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — 1-hop Account->Post</td><td>POST</td>
-                <td>25.1</td><td>21.8</td>
-                <td>25.1</td><td>25.1</td>
+                <td>24.2</td><td>21.5</td>
+                <td>24.2</td><td>24.2</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/safe — 2-hop Acct->Order->Prod</td><td>POST</td>
-                <td>54.1</td><td>51.2</td>
-                <td>54.1</td><td>54.1</td>
+                <td>73.9</td><td>46.2</td>
+                <td>73.9</td><td>73.9</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/graph — Graph 1-hop Account->Post</td><td>POST</td>
-                <td>9891.2</td><td>9886.8</td>
-                <td>9891.2</td><td>9891.2</td>
+                <td>4544.2</td><td>4536.7</td>
+                <td>4544.2</td><td>4544.2</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/graph — Graph Account->Company</td><td>POST</td>
-                <td>958.3</td><td>954.6</td>
-                <td>958.3</td><td>958.3</td>
+                <td>799.9</td><td>794.1</td>
+                <td>799.9</td><td>799.9</td>
                 <td>0</td>
             </tr><tr>
                 <td>POST /query/graph — Graph 2-hop Acct->Order->Prod</td><td>POST</td>
-                <td>10637.1</td><td>10608.9</td>
-                <td>10637.1</td><td>10637.1</td>
+                <td>5243.1</td><td>5208.2</td>
+                <td>5243.1</td><td>5243.1</td>
+                <td>0</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK 1-hop Acct->Post</td><td>POST</td>
+                <td>326.2</td><td>313.2</td>
+                <td>326.2</td><td>326.2</td>
+                <td>0</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK Acct->Company</td><td>POST</td>
+                <td>80.0</td><td>57.6</td>
+                <td>80.0</td><td>80.0</td>
+                <td>0</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK 2-hop Acct->Ord->Prod</td><td>POST</td>
+                <td>296.1</td><td>273.1</td>
+                <td>296.1</td><td>296.1</td>
                 <td>0</td>
             </tr>
 </table>
@@ -181,145 +196,163 @@
 <h2>2. 并发测试 (Concurrency=50)</h2>
 <div class="card">
 <table>
-<tr><th>接口</th><th>方法</th><th>avg</th><th>p50</th><th>p90</th><th>p95</th><th>p99</th><th>min</th><th>max</th><th>stdev</th><th>错误率</th></tr>
+<tr><th>接口</th><th>方法</th><th>avg</th><th>p50</th><th>p90</th><th>p95</th><th>p99</th><th>min</th><th>max</th><th>stdev</th><th>QPS</th><th>错误率</th></tr>
 <tr>
                 <td>GET /health</td><td>GET</td>
-                <td>8882.0</td><td>9257.4</td><td>16075.6</td>
-                <td>16921.4</td><td>16921.4</td>
-                <td>894.9</td><td>16921.4</td><td>4876.4</td>
-                <td>0.0%</td>
+                <td>9658.7</td><td>10159.4</td><td>17307.8</td>
+                <td>18198.1</td><td>18198.1</td>
+                <td>1005.8</td><td>18198.1</td><td>5362.2</td>
+                <td>2.1</td><td>0.0%</td>
             </tr><tr>
                 <td>GET /schema</td><td>GET</td>
-                <td>420.4</td><td>448.0</td><td>738.9</td>
-                <td>774.0</td><td>774.0</td>
-                <td>58.1</td><td>774.0</td><td>226.0</td>
-                <td>0.0%</td>
+                <td>399.4</td><td>414.2</td><td>705.4</td>
+                <td>745.0</td><td>745.0</td>
+                <td>81.5</td><td>745.0</td><td>211.6</td>
+                <td>50.1</td><td>0.0%</td>
             </tr><tr>
                 <td>GET /schema/nodes</td><td>GET</td>
-                <td>13.4</td><td>13.9</td><td>21.4</td>
-                <td>22.0</td><td>22.0</td>
-                <td>4.5</td><td>22.0</td><td>5.7</td>
-                <td>0.0%</td>
+                <td>23.1</td><td>27.8</td><td>35.4</td>
+                <td>36.3</td><td>36.3</td>
+                <td>4.9</td><td>36.3</td><td>10.4</td>
+                <td>865.6</td><td>0.0%</td>
             </tr><tr>
                 <td>GET /schema/edges</td><td>GET</td>
-                <td>12.9</td><td>13.4</td><td>20.8</td>
-                <td>27.4</td><td>27.4</td>
-                <td>3.0</td><td>27.4</td><td>6.2</td>
-                <td>0.0%</td>
+                <td>16.2</td><td>16.5</td><td>25.9</td>
+                <td>26.4</td><td>26.4</td>
+                <td>4.9</td><td>26.4</td><td>6.3</td>
+                <td>1237.2</td><td>0.0%</td>
             </tr><tr>
                 <td>GET /query/history</td><td>GET</td>
-                <td>7.7</td><td>8.3</td><td>10.6</td>
-                <td>11.7</td><td>11.7</td>
-                <td>3.3</td><td>11.7</td><td>2.4</td>
-                <td>0.0%</td>
+                <td>8.4</td><td>8.5</td><td>10.0</td>
+                <td>10.3</td><td>10.3</td>
+                <td>3.2</td><td>10.3</td><td>1.6</td>
+                <td>2391.8</td><td>0.0%</td>
             </tr><tr>
                 <td>DELETE /query/history</td><td>DELETE</td>
-                <td>4.1</td><td>4.3</td><td>5.4</td>
-                <td>5.7</td><td>5.7</td>
-                <td>2.1</td><td>5.7</td><td>0.9</td>
-                <td>0.0%</td>
+                <td>4.3</td><td>4.4</td><td>5.6</td>
+                <td>6.0</td><td>6.0</td>
+                <td>2.5</td><td>6.0</td><td>1.0</td>
+                <td>4650.6</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — PK Lookup</td><td>POST</td>
-                <td>13.5</td><td>14.5</td><td>21.2</td>
-                <td>22.2</td><td>22.2</td>
-                <td>3.6</td><td>22.2</td><td>5.9</td>
-                <td>0.0%</td>
+                <td>14.6</td><td>15.2</td><td>21.9</td>
+                <td>22.6</td><td>22.6</td>
+                <td>4.5</td><td>22.6</td><td>5.2</td>
+                <td>1373.7</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — Count single table</td><td>POST</td>
-                <td>19.7</td><td>20.3</td><td>31.9</td>
-                <td>33.1</td><td>33.1</td>
-                <td>7.8</td><td>33.1</td><td>8.4</td>
-                <td>0.0%</td>
+                <td>23.7</td><td>24.6</td><td>36.9</td>
+                <td>37.9</td><td>37.9</td>
+                <td>6.8</td><td>37.9</td><td>9.7</td>
+                <td>845.5</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — Filter score>90</td><td>POST</td>
-                <td>30.5</td><td>32.7</td><td>51.5</td>
-                <td>53.3</td><td>53.3</td>
-                <td>7.5</td><td>53.3</td><td>14.8</td>
-                <td>0.0%</td>
+                <td>30.1</td><td>32.2</td><td>51.9</td>
+                <td>54.4</td><td>54.4</td>
+                <td>4.9</td><td>54.4</td><td>15.3</td>
+                <td>664.9</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — AVG score</td><td>POST</td>
-                <td>31.8</td><td>33.1</td><td>54.9</td>
-                <td>57.7</td><td>57.7</td>
-                <td>4.9</td><td>57.7</td><td>16.2</td>
-                <td>0.0%</td>
+                <td>33.9</td><td>37.1</td><td>56.7</td>
+                <td>59.2</td><td>59.2</td>
+                <td>6.6</td><td>59.2</td><td>16.0</td>
+                <td>590.3</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — GROUP BY country</td><td>POST</td>
-                <td>217.4</td><td>216.4</td><td>414.7</td>
-                <td>429.9</td><td>429.9</td>
-                <td>18.2</td><td>429.9</td><td>136.0</td>
-                <td>0.0%</td>
+                <td>210.0</td><td>219.4</td><td>385.6</td>
+                <td>404.0</td><td>404.0</td>
+                <td>22.7</td><td>404.0</td><td>120.9</td>
+                <td>95.2</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — 1-hop Account->Post</td><td>POST</td>
-                <td>174.2</td><td>183.1</td><td>303.5</td>
-                <td>318.9</td><td>318.9</td>
-                <td>34.6</td><td>318.9</td><td>91.5</td>
-                <td>0.0%</td>
+                <td>192.0</td><td>202.4</td><td>349.1</td>
+                <td>365.0</td><td>365.0</td>
+                <td>18.6</td><td>365.0</td><td>109.9</td>
+                <td>104.1</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query — 2-hop Acct->Order->Prod</td><td>POST</td>
-                <td>320.5</td><td>340.6</td><td>569.2</td>
-                <td>596.2</td><td>596.2</td>
-                <td>30.9</td><td>596.2</td><td>174.9</td>
-                <td>0.0%</td>
+                <td>364.8</td><td>378.8</td><td>641.5</td>
+                <td>674.8</td><td>674.8</td>
+                <td>35.4</td><td>674.8</td><td>193.0</td>
+                <td>54.8</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — PK Lookup</td><td>POST</td>
-                <td>12.1</td><td>11.9</td><td>18.6</td>
-                <td>24.3</td><td>24.3</td>
-                <td>4.6</td><td>24.3</td><td>5.3</td>
-                <td>0.0%</td>
+                <td>17.8</td><td>18.4</td><td>27.0</td>
+                <td>27.7</td><td>27.7</td>
+                <td>5.2</td><td>27.7</td><td>7.0</td>
+                <td>1122.5</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — Count single table</td><td>POST</td>
-                <td>17.4</td><td>17.7</td><td>28.1</td>
-                <td>29.2</td><td>29.2</td>
-                <td>4.3</td><td>29.2</td><td>7.7</td>
-                <td>0.0%</td>
+                <td>29.7</td><td>27.9</td><td>56.3</td>
+                <td>59.7</td><td>59.7</td>
+                <td>5.7</td><td>59.7</td><td>17.2</td>
+                <td>673.6</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — Filter score>90</td><td>POST</td>
-                <td>27.3</td><td>28.2</td><td>47.1</td>
-                <td>49.4</td><td>49.4</td>
-                <td>4.4</td><td>49.4</td><td>13.7</td>
-                <td>0.0%</td>
+                <td>57.2</td><td>60.7</td><td>94.1</td>
+                <td>96.4</td><td>96.4</td>
+                <td>14.1</td><td>96.4</td><td>27.2</td>
+                <td>349.9</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — AVG score</td><td>POST</td>
-                <td>29.9</td><td>35.6</td><td>50.5</td>
-                <td>53.1</td><td>53.1</td>
-                <td>4.5</td><td>53.1</td><td>15.5</td>
-                <td>0.0%</td>
+                <td>41.1</td><td>43.0</td><td>69.1</td>
+                <td>73.0</td><td>73.0</td>
+                <td>6.9</td><td>73.0</td><td>20.3</td>
+                <td>486.6</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — GROUP BY country</td><td>POST</td>
-                <td>237.2</td><td>241.0</td><td>439.5</td>
-                <td>470.4</td><td>470.4</td>
-                <td>16.8</td><td>470.4</td><td>134.1</td>
-                <td>0.0%</td>
+                <td>233.6</td><td>251.5</td><td>446.8</td>
+                <td>465.3</td><td>465.3</td>
+                <td>20.7</td><td>465.3</td><td>138.3</td>
+                <td>85.6</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — 1-hop Account->Post</td><td>POST</td>
-                <td>168.8</td><td>175.5</td><td>300.4</td>
-                <td>314.4</td><td>314.4</td>
-                <td>33.5</td><td>314.4</td><td>90.9</td>
-                <td>0.0%</td>
+                <td>194.3</td><td>200.3</td><td>353.9</td>
+                <td>372.7</td><td>372.7</td>
+                <td>21.3</td><td>372.7</td><td>109.2</td>
+                <td>102.9</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/safe — 2-hop Acct->Order->Prod</td><td>POST</td>
-                <td>312.5</td><td>327.3</td><td>555.5</td>
-                <td>585.7</td><td>585.7</td>
-                <td>33.9</td><td>585.7</td><td>169.7</td>
-                <td>0.0%</td>
+                <td>376.7</td><td>395.5</td><td>667.5</td>
+                <td>700.3</td><td>700.3</td>
+                <td>42.9</td><td>700.3</td><td>206.9</td>
+                <td>53.1</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/graph — Graph 1-hop Account->Post</td><td>POST</td>
-                <td>6809.6</td><td>7038.7</td><td>12291.9</td>
-                <td>12937.7</td><td>12937.7</td>
-                <td>653.3</td><td>12937.7</td><td>3755.2</td>
-                <td>0.0%</td>
+                <td>11171.2</td><td>11855.4</td><td>21709.3</td>
+                <td>22351.1</td><td>22351.1</td>
+                <td>690.8</td><td>22351.1</td><td>7685.9</td>
+                <td>1.8</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/graph — Graph Account->Company</td><td>POST</td>
-                <td>7380.4</td><td>7839.0</td><td>12562.3</td>
-                <td>13156.1</td><td>13156.1</td>
-                <td>1440.1</td><td>13156.1</td><td>3650.5</td>
-                <td>0.0%</td>
+                <td>15029.4</td><td>15735.3</td><td>25723.3</td>
+                <td>26847.0</td><td>26847.0</td>
+                <td>2521.2</td><td>26847.0</td><td>7568.7</td>
+                <td>1.3</td><td>0.0%</td>
             </tr><tr>
                 <td>POST /query/graph — Graph 2-hop Acct->Order->Prod</td><td>POST</td>
-                <td>12768.2</td><td>13268.4</td><td>22875.4</td>
-                <td>24145.3</td><td>24145.3</td>
-                <td>1227.0</td><td>24145.3</td><td>7067.3</td>
-                <td>0.0%</td>
+                <td>28697.7</td><td>27964.0</td><td>48593.1</td>
+                <td>51138.7</td><td>51138.7</td>
+                <td>2596.9</td><td>51138.7</td><td>13116.3</td>
+                <td>0.7</td><td>0.0%</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK 1-hop Acct->Post</td><td>POST</td>
+                <td>2460.5</td><td>2510.2</td><td>2843.6</td>
+                <td>2871.0</td><td>2871.0</td>
+                <td>1944.7</td><td>2871.0</td><td>299.3</td>
+                <td>8.1</td><td>0.0%</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK Acct->Company</td><td>POST</td>
+                <td>516.4</td><td>539.6</td><td>933.4</td>
+                <td>986.0</td><td>986.0</td>
+                <td>48.7</td><td>986.0</td><td>287.0</td>
+                <td>38.7</td><td>0.0%</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK 2-hop Acct->Ord->Prod</td><td>POST</td>
+                <td>1605.3</td><td>1592.0</td><td>2933.6</td>
+                <td>3163.5</td><td>3163.5</td>
+                <td>159.4</td><td>3163.5</td><td>924.2</td>
+                <td>12.5</td><td>0.0%</td>
             </tr>
 </table>
 </div>
@@ -327,8 +360,8 @@
 <h2>3. 并发扩展性 (Concurrency Scaling)</h2>
 <div class="card">
 <table>
-<tr><th>接口</th><th>C=1</th><th>C=5</th><th>C=10</th><th>C=20</th><th>C=50</th></tr>
-<tr><td>GET /health</td><td>928.5</td><td>3975.3</td><td>7226.7</td><td>9674.8</td><td>10101.7</td></tr><tr><td>POST /query — PK Lookup</td><td>16.1</td><td>17.1</td><td>14.9</td><td>17.4</td><td>15.8</td></tr><tr><td>POST /query — Count single table</td><td>14.1</td><td>12.5</td><td>16.4</td><td>19.1</td><td>21.4</td></tr><tr><td>POST /query/safe — Count single table</td><td>14.9</td><td>10.4</td><td>14.1</td><td>17.5</td><td>21.6</td></tr><tr><td>GET /schema</td><td>51.2</td><td>161.4</td><td>279.0</td><td>379.2</td><td>467.0</td></tr>
+<tr><th>接口</th><th>C=1</th><th>C=10</th><th>C=50</th></tr>
+<tr><td>GET /health</td><td>905.6</td><td>7480.3</td><td>9752.5</td></tr><tr><td>POST /query — PK Lookup</td><td>13.3</td><td>13.3</td><td>17.6</td></tr><tr><td>POST /query — Count single table</td><td>12.5</td><td>16.1</td><td>20.9</td></tr><tr><td>POST /query/safe — Count single table</td><td>15.9</td><td>17.3</td><td>18.7</td></tr><tr><td>GET /schema</td><td>53.9</td><td>290.9</td><td>380.9</td></tr>
 </table>
 </div>
 
@@ -338,16 +371,16 @@
 <tr><th>接口</th><th>请求数</th><th>错误</th><th>耗时(ms)</th><th>QPS</th></tr>
 <tr>
             <td>GET /health</td><td>20</td>
-            <td>0</td><td>17218.0</td><td>1.2</td>
+            <td>0</td><td>17866.0</td><td>1.1</td>
         </tr><tr>
             <td>POST /query (mixed)</td><td>20</td>
-            <td>0</td><td>236.0</td><td>84.9</td>
+            <td>0</td><td>232.0</td><td>86.1</td>
         </tr><tr>
             <td>POST /query/safe (mixed)</td><td>20</td>
-            <td>0</td><td>215.0</td><td>93.1</td>
+            <td>0</td><td>217.0</td><td>92.1</td>
         </tr><tr>
             <td>GET /schema</td><td>20</td>
-            <td>0</td><td>747.0</td><td>26.8</td>
+            <td>0</td><td>768.0</td><td>26.0</td>
         </tr>
 </table>
 </div>
@@ -355,75 +388,87 @@
 <h2>5. 混合负载</h2>
 <div class="card">
 <table>
-<tr><th>接口</th><th>avg(ms)</th><th>p50(ms)</th><th>p95(ms)</th><th>p99(ms)</th><th>请求数</th><th>错误</th></tr>
+<tr><th>接口</th><th>avg(ms)</th><th>p50(ms)</th><th>p95(ms)</th><th>p99(ms)</th><th>QPS</th><th>请求数</th><th>错误</th></tr>
 <tr>
                 <td>POST /query — PK Lookup</td>
-                <td>12.1</td><td>13.1</td><td>19.7</td>
-                <td>19.7</td><td>20</td><td>0</td>
+                <td>14.6</td><td>14.8</td><td>25.3</td>
+                <td>25.3</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query — Count single table</td>
-                <td>35.0</td><td>35.6</td><td>47.9</td>
-                <td>47.9</td><td>20</td><td>0</td>
+                <td>41.7</td><td>41.6</td><td>62.2</td>
+                <td>62.2</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query — Filter score>90</td>
-                <td>73.6</td><td>75.0</td><td>98.0</td>
-                <td>98.0</td><td>20</td><td>0</td>
+                <td>89.5</td><td>90.5</td><td>121.2</td>
+                <td>121.2</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query — AVG score</td>
-                <td>125.8</td><td>129.9</td><td>145.5</td>
-                <td>145.5</td><td>20</td><td>0</td>
+                <td>146.5</td><td>150.9</td><td>165.0</td>
+                <td>165.0</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query — GROUP BY country</td>
-                <td>382.4</td><td>397.3</td><td>558.4</td>
-                <td>558.4</td><td>20</td><td>0</td>
+                <td>380.4</td><td>387.8</td><td>587.0</td>
+                <td>587.0</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query — 1-hop Account->Post</td>
-                <td>692.0</td><td>697.6</td><td>812.5</td>
-                <td>812.5</td><td>20</td><td>0</td>
+                <td>721.8</td><td>727.8</td><td>844.3</td>
+                <td>844.3</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query — 2-hop Acct->Order->Prod</td>
-                <td>1035.8</td><td>1092.6</td><td>1134.8</td>
-                <td>1134.8</td><td>20</td><td>0</td>
+                <td>1075.9</td><td>1134.4</td><td>1189.1</td>
+                <td>1189.1</td><td>20</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — PK Lookup</td>
-                <td>1029.7</td><td>1046.1</td><td>1120.9</td>
-                <td>1120.9</td><td>10</td><td>0</td>
+                <td>1068.2</td><td>1085.9</td><td>1171.8</td>
+                <td>1171.8</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — Count single table</td>
-                <td>868.8</td><td>875.1</td><td>930.8</td>
-                <td>930.8</td><td>10</td><td>0</td>
+                <td>875.3</td><td>882.4</td><td>941.4</td>
+                <td>941.4</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — Filter score>90</td>
-                <td>732.4</td><td>738.5</td><td>792.5</td>
-                <td>792.5</td><td>10</td><td>0</td>
+                <td>737.8</td><td>745.4</td><td>797.8</td>
+                <td>797.8</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — AVG score</td>
-                <td>522.8</td><td>536.4</td><td>645.4</td>
-                <td>645.4</td><td>10</td><td>0</td>
+                <td>523.6</td><td>537.8</td><td>648.0</td>
+                <td>648.0</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — GROUP BY country</td>
-                <td>366.8</td><td>365.9</td><td>390.2</td>
-                <td>390.2</td><td>10</td><td>0</td>
+                <td>343.5</td><td>346.4</td><td>382.0</td>
+                <td>382.0</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — 1-hop Account->Post</td>
-                <td>418.2</td><td>426.0</td><td>483.3</td>
-                <td>483.3</td><td>10</td><td>0</td>
+                <td>384.2</td><td>392.3</td><td>450.4</td>
+                <td>450.4</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/safe — 2-hop Acct->Order->Prod</td>
-                <td>644.7</td><td>658.7</td><td>776.7</td>
-                <td>776.7</td><td>10</td><td>0</td>
+                <td>612.5</td><td>629.8</td><td>745.4</td>
+                <td>745.4</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/graph — Graph 1-hop Account->Post</td>
-                <td>4225.3</td><td>4585.8</td><td>7157.2</td>
-                <td>7157.2</td><td>10</td><td>0</td>
+                <td>4472.4</td><td>4805.9</td><td>7646.1</td>
+                <td>7646.1</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/graph — Graph Account->Company</td>
-                <td>10557.1</td><td>10829.3</td><td>13315.0</td>
-                <td>13315.0</td><td>10</td><td>0</td>
+                <td>11526.3</td><td>11654.2</td><td>15703.0</td>
+                <td>15703.0</td><td>10</td><td>0</td>
             </tr><tr>
                 <td>POST /query/graph — Graph 2-hop Acct->Order->Prod</td>
-                <td>19952.2</td><td>20471.3</td><td>25535.1</td>
-                <td>25535.1</td><td>10</td><td>0</td>
+                <td>33329.8</td><td>35174.0</td><td>47475.4</td>
+                <td>47475.4</td><td>10</td><td>0</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK 1-hop Acct->Post</td>
+                <td>47866.7</td><td>47898.2</td><td>48186.6</td>
+                <td>48186.6</td><td>10</td><td>0</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK Acct->Company</td>
+                <td>48466.3</td><td>48485.7</td><td>48698.9</td>
+                <td>48698.9</td><td>10</td><td>0</td>
+            </tr><tr>
+                <td>POST /query/graph — Graph PK 2-hop Acct->Ord->Prod</td>
+                <td>48934.2</td><td>48921.2</td><td>50650.4</td>
+                <td>50650.4</td><td>10</td><td>0</td>
             </tr>
 </table>
 </div>
@@ -431,21 +476,21 @@
 <h2>6. 持续负载 (60s)</h2>
 <div class="card">
   <div class="stats-grid">
-    <div class="stat"><div class="value">70.0</div><div class="label">QPS</div></div>
-    <div class="stat"><div class="value">4200</div><div class="label">总请求</div></div>
-    <div class="stat"><div class="value">535.6</div><div class="label">avg(ms)</div></div>
-    <div class="stat"><div class="value">586.1</div><div class="label">p50(ms)</div></div>
-    <div class="stat"><div class="value">805.1</div><div class="label">p95(ms)</div></div>
-    <div class="stat"><div class="value">894.6</div><div class="label">p99(ms)</div></div>
-    <div class="stat"><div class="value">7.3</div><div class="label">min(ms)</div></div>
-    <div class="stat"><div class="value">1546.1</div><div class="label">max(ms)</div></div>
-    <div class="stat"><div class="value">225.7</div><div class="label">stdev(ms)</div></div>
+    <div class="stat"><div class="value">35.0</div><div class="label">QPS</div></div>
+    <div class="stat"><div class="value">2100</div><div class="label">总请求</div></div>
+    <div class="stat"><div class="value">1125.1</div><div class="label">avg(ms)</div></div>
+    <div class="stat"><div class="value">1214.8</div><div class="label">p50(ms)</div></div>
+    <div class="stat"><div class="value">1747.3</div><div class="label">p95(ms)</div></div>
+    <div class="stat"><div class="value">4596.9</div><div class="label">p99(ms)</div></div>
+    <div class="stat"><div class="value">11.5</div><div class="label">min(ms)</div></div>
+    <div class="stat"><div class="value">4694.9</div><div class="label">max(ms)</div></div>
+    <div class="stat"><div class="value">701.6</div><div class="label">stdev(ms)</div></div>
     <div class="stat"><div class="value ">0.00%</div><div class="label">错误率</div></div>
   </div>
 </div>
 
 <h2>7. 压测结论</h2>
-<div class="conclusion warn"><h3>吞吐量: 良好</h3><p>持续负载 QPS=70.0，可满足中等并发场景，高并发下需关注延迟变化。</p></div><div class="conclusion bad"><h3>延迟: 需关注</h3><p>P95=805.1ms，部分查询延迟过高，建议检查慢查询并优化索引/schema。</p></div><div class="conclusion"><h3>稳定性: 优秀</h3><p>压测期间零错误，服务稳定性良好。</p></div><div class="conclusion warn"><h3>并发扩展性: 存在退化</h3><p>高并发下部分接口延迟增长超过 3 倍，连接池或内部锁可能成为瓶颈。建议评估 KUZU_POOL_SIZE 和 KUZU_BUFFER_POOL_MB 参数。</p></div><div class="conclusion"><h3>/query/safe vs /query: 1.3x 开销</h3><p>线程安全模式额外开销可控，写场景可放心使用。</p></div><div class="conclusion warn"><h3>慢查询识别</h3><p>以下查询在高并发下平均延迟超过 500ms：GET /health (8882.0ms), POST /query/graph — Graph 1-hop Account->Post (6809.6ms), POST /query/graph — Graph Account->Company (7380.4ms), POST /query/graph — Graph 2-hop Acct->Order->Prod (12768.2ms)。建议优化查询结构或增加索引。</p></div>
+<div class="conclusion bad"><h3>吞吐量: 待优化</h3><p>持续负载 QPS=35.0，建议优化连接池大小或数据库 buffer_pool 配置。</p></div><div class="conclusion bad"><h3>延迟: 需关注</h3><p>P95=1747.3ms，部分查询延迟过高，建议检查慢查询并优化索引/schema。</p></div><div class="conclusion"><h3>稳定性: 优秀</h3><p>压测期间零错误，服务稳定性良好。</p></div><div class="conclusion warn"><h3>并发扩展性: 存在退化</h3><p>高并发下部分接口延迟增长超过 3 倍，连接池或内部锁可能成为瓶颈。建议评估 KUZU_POOL_SIZE 和 KUZU_BUFFER_POOL_MB 参数。</p></div><div class="conclusion"><h3>/query/safe vs /query: 1.4x 开销</h3><p>线程安全模式额外开销可控，写场景可放心使用。</p></div><div class="conclusion warn"><h3>慢查询识别</h3><p>以下查询在高并发下平均延迟超过 500ms：GET /health (9658.7ms), POST /query/graph — Graph 1-hop Account->Post (11171.2ms), POST /query/graph — Graph Account->Company (15029.4ms), POST /query/graph — Graph 2-hop Acct->Order->Prod (28697.7ms), POST /query/graph — Graph PK 1-hop Acct->Post (2460.5ms), POST /query/graph — Graph PK Acct->Company (516.4ms), POST /query/graph — Graph PK 2-hop Acct->Ord->Prod (1605.3ms)。建议优化查询结构或增加索引。</p></div>
 
 </body>
 </html>
